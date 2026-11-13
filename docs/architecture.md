@@ -16,4 +16,4 @@ Navigation toggles the visible section and updates its title and description. Th
 
 The two Web Handler routes are `GET /api/health` and `POST /api/agent/evaluate`. The evaluation route validates requests before dispatching to an evaluator. Calibration, decision, and benchmark checks run locally. The consistency and evidence evaluators use Vercel AI SDK's ToolLoopAgent with Anthropic or OpenAI. Each request allows one generation step and no model tool calls. The optional TypeScript API client is available in `src/lib/api-client.ts`; the dashboard does not load it. Keep production bearer tokens on trusted servers.
 
-Supabase is reserved for future persistence. This version stores no API evaluation state. Redis stores only rate-limit counters.
+Supabase is reserved for future persistence. This version stores no API evaluation state. Vercel Firewall tracks paid model call counts.

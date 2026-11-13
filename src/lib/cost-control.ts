@@ -1,18 +1,15 @@
-const incrementWithExpiry = "local n = redis.call('INCR', KEYS[1]); if n == 1 then redis.call('EXPIRE', KEYS[1], 120) end; return n";
+import { checkRateLimit } from '@vercel/firewall';
 
-export async function allowModelCall(url: string, token: string, signal: AbortSignal) {
-  const endpoint = new URL(url);
-  if (endpoint.protocol !== 'https:') throw new Error('Redis endpoint must use HTTPS');
-  const minute = Math.floor(Date.now() / 60000);
-  const response = await fetch(endpoint, {
-    method: 'POST', redirect: 'error', signal,
-    headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
-    body: JSON.stringify(['EVAL', incrementWithExpiry, 1, `epistemictrust:model-calls:${minute}`]),
-  });
-  if (!response.ok) throw new Error('Rate limiter unavailable');
-  const payload = await response.json() as { result?: unknown };
-  if (typeof payload.result !== 'number' || !Number.isInteger(payload.result) || payload.result < 1) {
-    throw new Error('Invalid rate limiter response');
+export async function allowModelCall() {
+  const host = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (process.env.NODE_ENV !== 'production' || !host || !process.env.RATE_LIMIT_SECRET) {
+    throw new Error('Firewall rate limiter unavailable');
   }
-  return payload.result <= 5;
+  const { error, rateLimited } = await checkRateLimit('epistemictrust-model-calls', {
+    headers: new Headers({ host }),
+    rateLimitKey: 'epistemictrust-production',
+    timeout: 3000,
+  });
+  if (error || typeof rateLimited !== 'boolean') throw new Error('Firewall rate limiter unavailable');
+  return !rateLimited;
 }

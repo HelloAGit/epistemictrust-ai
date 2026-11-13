@@ -65,7 +65,7 @@ export async function POST(request: Request) {
   try {
     let provider;
     if (evaluation.evaluationType === 'evidence' || evaluation.evaluationType === 'consistency') {
-      const { AGENT_ENABLED, ANTHROPIC_API_KEY, OPENAI_API_KEY, EVALUATION_MODEL, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN } = process.env;
+      const { AGENT_ENABLED, ANTHROPIC_API_KEY, OPENAI_API_KEY, EVALUATION_MODEL, VERCEL_ENV } = process.env;
       const providerName = process.env.EVALUATION_PROVIDER ?? 'openai';
       if (providerName !== 'anthropic' && providerName !== 'openai') {
         return error(503, 'model_unavailable', 'Set EVALUATION_PROVIDER to anthropic or openai.');
@@ -75,13 +75,12 @@ export async function POST(request: Request) {
       if (AGENT_ENABLED !== 'true' || !apiKey || !model) {
         return error(503, 'model_unavailable', 'Enable the agent and configure the selected provider key and EVALUATION_MODEL.');
       }
-      if (!token || !UPSTASH_REDIS_REST_URL || !UPSTASH_REDIS_REST_TOKEN) {
-        return error(503, 'cost_control_unconfigured', 'Configure bearer authentication and Redis cost controls.');
+      if (!token || VERCEL_ENV !== 'production') {
+        return error(503, 'cost_control_unconfigured', 'Live calls require authenticated Vercel production and its firewall rule.');
       }
       let allowed;
       try {
-        allowed = await allowModelCall(UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN,
-          AbortSignal.any([signal, AbortSignal.timeout(3000)]));
+        allowed = await allowModelCall();
       } catch {
         return error(503, 'cost_control_unavailable', 'The model-call limiter is unavailable.');
       }

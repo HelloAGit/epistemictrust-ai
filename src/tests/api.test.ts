@@ -6,7 +6,7 @@ import { evaluationResponseSchema, requestSchema } from '../lib/schemas.js';
 import examples from '../../data/sample-evaluations.json' with { type: 'json' };
 
 const keys = ['NODE_ENV', 'VERCEL_ENV', 'EVALUATION_API_TOKEN', 'AGENT_ENABLED', 'OPENAI_API_KEY',
-  'ANTHROPIC_API_KEY', 'EVALUATION_PROVIDER', 'EVALUATION_MODEL', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'];
+  'ANTHROPIC_API_KEY', 'EVALUATION_PROVIDER', 'EVALUATION_MODEL'];
 const post = (data: unknown, token?: string) => POST(new Request('http://localhost/api/agent/evaluate', {
   method: 'POST',
   headers: { 'content-type': 'application/json', ...(token ? { authorization: `Bearer ${token}` } : {}) },
