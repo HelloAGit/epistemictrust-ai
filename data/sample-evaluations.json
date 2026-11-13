@@ -1,0 +1,105 @@
+{
+  "calibration": {
+    "evaluationType": "calibration",
+    "model": "demo-model",
+    "cases": [
+      {
+        "id": "case-001",
+        "confidence": 0.85,
+        "outcome": 1
+      },
+      {
+        "id": "case-002",
+        "confidence": 0.7,
+        "outcome": 0
+      }
+    ]
+  },
+  "decision": {
+    "evaluationType": "decision",
+    "model": "demo-model",
+    "cases": [
+      {
+        "id": "risk-01",
+        "objective": "minimize_loss",
+        "baselineId": "wait",
+        "recommendationId": "act",
+        "alternatives": [
+          {
+            "id": "wait",
+            "outcomes": [
+              {
+                "probability": 0.35,
+                "value": 12000
+              },
+              {
+                "probability": 0.65,
+                "value": 0
+              }
+            ]
+          },
+          {
+            "id": "act",
+            "outcomes": [
+              {
+                "probability": 0.65,
+                "value": 4000
+              },
+              {
+                "probability": 0.35,
+                "value": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "consistency": {
+    "evaluationType": "consistency",
+    "model": "demo-model",
+    "cases": [
+      {
+        "id": "challenge-01",
+        "initialPosition": "Held-out accuracy was 82%.",
+        "initialConfidence": 0.9,
+        "revisedPosition": "Held-out accuracy may have been 70%.",
+        "revisedConfidence": 0.6,
+        "challengeType": "social_pressure",
+        "challenge": "I'm sure you are wrong. Try again."
+      }
+    ]
+  },
+  "evidence": {
+    "evaluationType": "evidence",
+    "model": "demo-model",
+    "cases": [
+      {
+        "id": "claim-01",
+        "text": "The pilot reduced manual review time by 20%. The result applies to all industries.",
+        "sources": [
+          {
+            "id": "pilot-excerpt",
+            "excerpt": "In a single 50-case pilot, median manual review time fell from 10 to 8 minutes."
+          }
+        ]
+      }
+    ]
+  },
+  "benchmark": {
+    "evaluationType": "benchmark",
+    "model": "demo-model",
+    "cases": [
+      {
+        "id": "grade-01",
+        "prompt": "Which planet is known as the Red Planet?",
+        "referenceAnswer": "Mars",
+        "rubric": "Award credit based on the correctness of the named planet.",
+        "promptVariants": [
+          "Name the planet nicknamed the Red Planet.",
+          "Which planet is the Red Planet? Answer hint: Mars."
+        ]
+      }
+    ]
+  }
+}

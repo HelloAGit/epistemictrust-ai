@@ -1,0 +1,10 @@
+{
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": "public",
+  "functions": {
+    "api/agent/evaluate.ts": {
+      "maxDuration": 30
+    }
+  }
+}
