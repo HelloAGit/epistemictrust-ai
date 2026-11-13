@@ -65,9 +65,15 @@ export async function POST(request: Request) {
   try {
     let provider;
     if (evaluation.evaluationType === 'evidence' || evaluation.evaluationType === 'consistency') {
-      const { AGENT_ENABLED, OPENAI_API_KEY, EVALUATION_MODEL, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN } = process.env;
-      if (AGENT_ENABLED !== 'true' || !OPENAI_API_KEY?.trim() || !EVALUATION_MODEL?.trim()) {
-        return error(503, 'model_unavailable', 'Enable the agent and configure OPENAI_API_KEY and EVALUATION_MODEL.');
+      const { AGENT_ENABLED, ANTHROPIC_API_KEY, OPENAI_API_KEY, EVALUATION_MODEL, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN } = process.env;
+      const providerName = process.env.EVALUATION_PROVIDER ?? 'openai';
+      if (providerName !== 'anthropic' && providerName !== 'openai') {
+        return error(503, 'model_unavailable', 'Set EVALUATION_PROVIDER to anthropic or openai.');
+      }
+      const apiKey = (providerName === 'anthropic' ? ANTHROPIC_API_KEY : OPENAI_API_KEY)?.trim();
+      const model = EVALUATION_MODEL?.trim();
+      if (AGENT_ENABLED !== 'true' || !apiKey || !model) {
+        return error(503, 'model_unavailable', 'Enable the agent and configure the selected provider key and EVALUATION_MODEL.');
       }
       if (!token || !UPSTASH_REDIS_REST_URL || !UPSTASH_REDIS_REST_TOKEN) {
         return error(503, 'cost_control_unconfigured', 'Configure bearer authentication and Redis cost controls.');
@@ -81,7 +87,7 @@ export async function POST(request: Request) {
       }
       if (!allowed) return error(429, 'rate_limited', 'The model-call limit has been reached.', { 'Retry-After': '60' });
       const { createModelProvider } = await import('../../src/lib/model-provider.js');
-      provider = createModelProvider(OPENAI_API_KEY, EVALUATION_MODEL);
+      provider = createModelProvider(providerName, apiKey, model);
     }
     return Response.json(await evaluate(evaluation, signal, provider), { headers: { 'Cache-Control': 'no-store' } });
   } catch {

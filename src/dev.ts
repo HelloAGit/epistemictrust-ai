@@ -5,12 +5,17 @@ import { GET } from '../api/health.js';
 import { POST } from '../api/agent/evaluate.js';
 
 const html = await readFile(new URL('../../public/index.html', import.meta.url));
+const analytics = await readFile(new URL('../../public/analytics.js', import.meta.url));
 const port = Number(process.env.PORT ?? '3000');
 const server = createServer(async (incoming, outgoing) => {
   try {
     const url = new URL(incoming.url ?? '/', 'http://localhost');
     if (url.pathname === '/' && incoming.method === 'GET') {
       outgoing.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }).end(html);
+      return;
+    }
+    if (url.pathname === '/analytics.js' && incoming.method === 'GET') {
+      outgoing.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8' }).end(analytics);
       return;
     }
     let response: Response;

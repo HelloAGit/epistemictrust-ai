@@ -6,7 +6,7 @@ import { evaluationResponseSchema, requestSchema } from '../lib/schemas.js';
 import examples from '../../data/sample-evaluations.json' with { type: 'json' };
 
 const keys = ['NODE_ENV', 'VERCEL_ENV', 'EVALUATION_API_TOKEN', 'AGENT_ENABLED', 'OPENAI_API_KEY',
-  'EVALUATION_MODEL', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'];
+  'ANTHROPIC_API_KEY', 'EVALUATION_PROVIDER', 'EVALUATION_MODEL', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'];
 const post = (data: unknown, token?: string) => POST(new Request('http://localhost/api/agent/evaluate', {
   method: 'POST',
   headers: { 'content-type': 'application/json', ...(token ? { authorization: `Bearer ${token}` } : {}) },
@@ -60,6 +60,9 @@ test('deterministic endpoints return structured results without a provider', () 
 
 test('model-dependent calls report missing configuration', () => isolated(async () => {
   process.env.AGENT_ENABLED = 'true';
+  process.env.EVALUATION_PROVIDER = 'anthropic';
+  process.env.EVALUATION_MODEL = 'claude-sonnet-4-6';
+  process.env.OPENAI_API_KEY = 'unused-openai-test-key';
   const response = await post(examples.evidence);
   assert.equal(response.status, 503);
   assert.equal((await response.json()).error.code, 'model_unavailable');

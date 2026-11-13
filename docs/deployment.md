@@ -6,7 +6,9 @@ Use the GitHub repository as the Vercel project source. Select Other as the fram
 | --- | --- |
 | `EVALUATION_API_TOKEN` | Required for the evaluation endpoint on every Vercel deployment. Use a high-entropy bearer token and keep it on trusted servers. The health endpoint is public. |
 | `AGENT_ENABLED` | Set to `true` to enable evidence and consistency evaluations once the remaining credentials are configured. Defaults to disabled. |
-| `OPENAI_API_KEY`, `EVALUATION_MODEL` | Server-side OpenAI key and a Chat Completions model that supports structured outputs. Required for model-dependent requests. |
+| `EVALUATION_PROVIDER` | Use `anthropic` for Claude. The default is `openai`. |
+| `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` | Set the key for the selected provider as a server-side secret. |
+| `EVALUATION_MODEL` | Provider model ID with native structured outputs, for example `claude-sonnet-4-6` with Anthropic. |
 | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Required for model-dependent requests. Use an HTTPS Upstash Redis REST endpoint. An atomic fixed-window counter allows five model calls per minute across instances sharing that Redis database. A failed limiter blocks model calls. |
 | `DATABASE_URL` | Reserved for later Supabase PostgreSQL integration. Leave empty for this release. |
 

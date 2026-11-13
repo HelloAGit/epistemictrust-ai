@@ -12,12 +12,13 @@
     "dev": "tsc --outDir dist --noEmit false && node --env-file-if-exists=.env dist/src/dev.js"
   },
   "dependencies": {
-    "ai": "^6.0.0",
+    "@ai-sdk/anthropic": "^3.0.142",
     "@ai-sdk/openai": "^3.0.0",
+    "ai": "^6.0.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.9.0",
-    "@types/node": "^24.0.0"
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
   }
 }
