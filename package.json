@@ -7,9 +7,9 @@
     "node": "24.x"
   },
   "scripts": {
-    "test": "node --test src/tests/*.test.ts",
+    "test": "tsc --outDir dist --noEmit false && node --test dist/src/tests/*.test.js",
     "typecheck": "tsc --noEmit",
-    "dev": "node --env-file-if-exists=.env src/dev.ts"
+    "dev": "tsc --outDir dist --noEmit false && node --env-file-if-exists=.env dist/src/dev.js"
   },
   "dependencies": {
     "ai": "^6.0.0",

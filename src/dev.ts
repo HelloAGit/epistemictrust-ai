@@ -1,10 +1,10 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { Readable } from 'node:stream';
-import { GET } from '../api/health.ts';
-import { POST } from '../api/agent/evaluate.ts';
+import { GET } from '../api/health.js';
+import { POST } from '../api/agent/evaluate.js';
 
-const html = await readFile(new URL('../public/index.html', import.meta.url));
+const html = await readFile(new URL('../../public/index.html', import.meta.url));
 const port = Number(process.env.PORT ?? '3000');
 const server = createServer(async (incoming, outgoing) => {
   try {

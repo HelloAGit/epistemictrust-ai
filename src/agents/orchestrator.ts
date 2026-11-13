@@ -1,11 +1,11 @@
 import { randomUUID } from 'node:crypto';
-import { evaluationResponseSchema, type EvaluationRequest } from '../lib/schemas.ts';
-import type { ModelProvider } from '../lib/model-provider.ts';
-import { evaluateCalibration } from './calibration.ts';
-import { evaluateDecisions } from './decision.ts';
-import { evaluateConsistency } from './consistency.ts';
-import { evaluateEvidence } from './evidence.ts';
-import { evaluateBenchmarks } from './benchmark.ts';
+import { evaluationResponseSchema, type EvaluationRequest } from '../lib/schemas.js';
+import type { ModelProvider } from '../lib/model-provider.js';
+import { evaluateCalibration } from './calibration.js';
+import { evaluateDecisions } from './decision.js';
+import { evaluateConsistency } from './consistency.js';
+import { evaluateEvidence } from './evidence.js';
+import { evaluateBenchmarks } from './benchmark.js';
 
 export async function evaluate(request: EvaluationRequest, signal: AbortSignal, provider?: ModelProvider) {
   const base = {

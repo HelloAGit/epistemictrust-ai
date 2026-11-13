@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { POST } from '../../api/agent/evaluate.ts';
-import { GET } from '../../api/health.ts';
-import { evaluationResponseSchema, requestSchema } from '../lib/schemas.ts';
+import { POST } from '../../api/agent/evaluate.js';
+import { GET } from '../../api/health.js';
+import { evaluationResponseSchema, requestSchema } from '../lib/schemas.js';
 import examples from '../../data/sample-evaluations.json' with { type: 'json' };
 
 const keys = ['NODE_ENV', 'VERCEL_ENV', 'EVALUATION_API_TOKEN', 'AGENT_ENABLED', 'OPENAI_API_KEY',

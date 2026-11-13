@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import type { ModelProvider } from '../lib/model-provider.ts';
-import type { Cases } from '../lib/schemas.ts';
+import type { ModelProvider } from '../lib/model-provider.js';
+import type { Cases } from '../lib/schemas.js';
 
 const claimSchema = z.object({
   claim: z.string(), sourceIds: z.array(z.string()),

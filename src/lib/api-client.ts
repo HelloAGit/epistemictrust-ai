@@ -1,4 +1,4 @@
-import { evaluationResponseSchema, type EvaluationRequest } from './schemas.ts';
+import { evaluationResponseSchema, type EvaluationRequest } from './schemas.js';
 
 export async function runEvaluation(origin: string, request: EvaluationRequest, token?: string, signal?: AbortSignal) {
   const response = await fetch(new URL('/api/agent/evaluate', origin), {

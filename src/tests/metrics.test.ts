@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { calibrationMetrics } from '../lib/metrics.ts';
+import { calibrationMetrics } from '../lib/metrics.js';
 
 const close = (a: number, b: number) => assert.ok(Math.abs(a - b) < 1e-12, `${a} != ${b}`);
 

@@ -1,7 +1,7 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
-import { requestSchema } from '../../src/lib/schemas.ts';
-import { evaluate } from '../../src/agents/orchestrator.ts';
-import { allowModelCall } from '../../src/lib/cost-control.ts';
+import { requestSchema } from '../../src/lib/schemas.js';
+import { evaluate } from '../../src/agents/orchestrator.js';
+import { allowModelCall } from '../../src/lib/cost-control.js';
 
 const maxBodyBytes = 64 * 1024;
 const error = (status: number, code: string, message: string, headers?: HeadersInit) =>
@@ -80,7 +80,7 @@ export async function POST(request: Request) {
         return error(503, 'cost_control_unavailable', 'The model-call limiter is unavailable.');
       }
       if (!allowed) return error(429, 'rate_limited', 'The model-call limit has been reached.', { 'Retry-After': '60' });
-      const { createModelProvider } = await import('../../src/lib/model-provider.ts');
+      const { createModelProvider } = await import('../../src/lib/model-provider.js');
       provider = createModelProvider(OPENAI_API_KEY, EVALUATION_MODEL);
     }
     return Response.json(await evaluate(evaluation, signal, provider), { headers: { 'Cache-Control': 'no-store' } });

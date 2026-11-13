@@ -1,4 +1,4 @@
-import type { Cases } from '../lib/schemas.ts';
+import type { Cases } from '../lib/schemas.js';
 
 export function evaluateDecisions(cases: Cases<'decision'>) {
   return cases.map(({ id, objective, baselineId, recommendationId, alternatives, realisedOutcome }) => {

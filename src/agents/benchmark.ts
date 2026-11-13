@@ -1,4 +1,4 @@
-import type { Cases } from '../lib/schemas.ts';
+import type { Cases } from '../lib/schemas.js';
 
 const normalize = (text: string) => text.normalize('NFKC').trim().replace(/\s+/g, ' ').toLowerCase();
 
