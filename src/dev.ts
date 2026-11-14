@@ -3,9 +3,17 @@ import { readFile } from 'node:fs/promises';
 import { Readable } from 'node:stream';
 import { GET } from '../api/health.js';
 import { POST } from '../api/agent/evaluate.js';
+import { POST as calibration } from '../api/calibration/analyze.js';
+import { POST as simulate } from '../api/decisions/simulate.js';
 
 const html = await readFile(new URL('../../public/index.html', import.meta.url));
 const analytics = await readFile(new URL('../../public/analytics.js', import.meta.url));
+const advanced = await readFile(new URL('../../public/advanced.js', import.meta.url));
+const postRoutes = new Map([
+  ['/api/agent/evaluate', POST],
+  ['/api/calibration/analyze', calibration],
+  ['/api/decisions/simulate', simulate],
+]);
 const port = Number(process.env.PORT ?? '3000');
 const server = createServer(async (incoming, outgoing) => {
   try {
@@ -14,19 +22,20 @@ const server = createServer(async (incoming, outgoing) => {
       outgoing.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' }).end(html);
       return;
     }
-    if (url.pathname === '/analytics.js' && incoming.method === 'GET') {
-      outgoing.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8' }).end(analytics);
+    if ((url.pathname === '/analytics.js' || url.pathname === '/advanced.js') && incoming.method === 'GET') {
+      outgoing.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8' })
+        .end(url.pathname === '/analytics.js' ? analytics : advanced);
       return;
     }
     let response: Response;
     if (url.pathname === '/api/health' && incoming.method === 'GET') {
       response = GET();
-    } else if (url.pathname === '/api/agent/evaluate' && incoming.method === 'POST') {
+    } else if (postRoutes.has(url.pathname) && incoming.method === 'POST') {
       const controller = new AbortController();
       outgoing.once('close', () => {
         if (!outgoing.writableFinished) controller.abort();
       });
-      response = await POST(new Request(url, {
+      response = await postRoutes.get(url.pathname)!(new Request(url, {
         method: 'POST',
         headers: incoming.headers as Record<string, string>,
         body: Readable.toWeb(incoming) as ReadableStream,
