@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export async function deterministicRoute<T extends z.ZodType>(
-  request: Request, schema: T, run: (input: z.output<T>) => unknown,
+  request: Request, schema: T, run: (input: z.output<T>) => unknown | Promise<unknown>,
 ) {
   const headers = { 'cache-control': 'no-store' };
   const reply = (value: unknown, status: number) => Response.json(value, { status, headers });
@@ -26,7 +26,8 @@ export async function deterministicRoute<T extends z.ZodType>(
     }
     const result = schema.safeParse(JSON.parse(body + decoder.decode()));
     if (!result.success) return reply({ error: 'Invalid request', issues: result.error.issues.map(({ path, message }) => ({ path, message })) }, 400);
-    return reply(run(result.data), 200);
+    const output = await run(result.data);
+    return output instanceof Response ? output : reply(output, 200);
   } catch {
     return reply({ error: 'Unable to process request' }, 400);
   } finally {

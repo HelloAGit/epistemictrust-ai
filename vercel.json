@@ -3,6 +3,9 @@
   "buildCommand": null,
   "outputDirectory": "public",
   "functions": {
+    "api/evaluations.ts": {
+      "maxDuration": 30
+    },
     "api/agent/evaluate.ts": {
       "maxDuration": 30
     }

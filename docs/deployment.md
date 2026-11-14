@@ -16,6 +16,8 @@ Set variables in the correct Preview and Production environments and redeploy af
 
 Paid model calls run only in Vercel Production, after bearer authentication and an SDK check against the published Vercel Firewall rate-limit rule `epistemictrust-model-calls`. Configure the rule with the `@vercel/firewall` condition, a fixed 60-second window, and five requests. All paid calls share a bucket within each Vercel region. A missing rule or failed firewall check blocks the provider call.
 
+The Model Arena registry accepts comma-separated `ARENA_ANTHROPIC_MODELS` and `ARENA_OPENAI_MODELS` server variables. Without a list, the selected evaluation provider's configured model is used. Each request is bounded to four provider attempts and a 23-second deadline. Results can be downloaded as JSON. Runs are request-scoped and have no durable history. The call cap limits request count and each response is capped at 256 tokens. The UI does not estimate currency costs.
+
 Run `vercel deploy` for a preview and `vercel inspect <deployment-url> --logs` to inspect the build. Verify the health route, run the README calibration request with `Authorization: Bearer <token>`, and compare the dashboard at desktop and mobile sizes. Run `vercel deploy --prod` after preview verification. Recheck the production URL and record its deployment ID from `vercel inspect <production-url>`. Verify the Git integration separately in project settings.
 
 Sources for the hosting and agent APIs are the [Vercel Node.js runtime documentation](https://vercel.com/docs/functions/runtimes/node-js) and the [ToolLoopAgent reference](https://ai-sdk.dev/docs/reference/ai-sdk-core/tool-loop-agent).
