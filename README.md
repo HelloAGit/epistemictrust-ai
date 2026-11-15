@@ -8,11 +8,11 @@ EpistemicTrust AI is a synthetic evaluation dashboard and API for confidence cal
 
 The dashboard includes:
 
-- **Overview and Calibration Lab** — synthetic model cases, calibration metrics, reliability diagrams, and editable browser-local evaluations.
-- **Consistency Audit** and **Evidence** — scripted dashboard examples, plus API evaluators that use a configured language model.
-- **Decision Simulator** and **Benchmark Integrity** — expected-loss comparisons and deterministic benchmark-risk checks.
-- **Reports & Exports** — JSON and CSV downloads, print support, and an integration contract example.
-- **Analytics** — browser-local model filters, calibration charts, and Brier-score comparisons. MLStatSoft integration is pending its API contract.
+- **Overview and Calibration Lab** : synthetic model cases, calibration metrics, reliability diagrams, and editable browser-local evaluations.
+- **Consistency Audit** and **Evidence** : scripted dashboard examples, plus API evaluators that use a configured language model.
+- **Decision Simulator** and **Benchmark Integrity** : expected-loss comparisons and deterministic benchmark-risk checks.
+- **Reports & Exports**:  JSON and CSV downloads, print support, and an integration contract example.
+- **Analytics**: browser-local model filters, calibration charts, and Brier-score comparisons. MLStatSoft integration is pending its API contract.
 
 ## Evaluation API
 
