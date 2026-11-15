@@ -12,7 +12,7 @@ The dashboard includes:
 - **Consistency Audit** and **Evidence** : scripted dashboard examples, plus API evaluators that use a configured language model.
 - **Decision Simulator** and **Benchmark Integrity** : expected-loss comparisons and deterministic benchmark-risk checks.
 - **Reports & Exports**:  JSON and CSV downloads, print support, and an integration contract example.
-- **Analytics**: browser-local model filters, calibration charts, and Brier-score comparisons. MLStatSoft integration is pending its API contract.
+- **Analytics**: browser-local model filters, calibration charts, and Brier-score comparisons. 
 
 ## Evaluation API
 
